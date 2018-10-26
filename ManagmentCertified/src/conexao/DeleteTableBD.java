@@ -6,10 +6,10 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import atributosCertificado.Certificado;
+import atributosCertificado.Certified;
 
-public class DeletarTabelaBD {
-	public void delete(Certificado certificado) {
+public class DeleteTableBD {
+	public void delete(Certified certificado) {
 		Connection con = ConnectionFactory.getConnection();
 		PreparedStatement stmt = null;
 	
