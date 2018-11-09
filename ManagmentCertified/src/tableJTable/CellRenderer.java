@@ -1,4 +1,4 @@
-package tabelaJTable;
+package tableJTable;
 
 import java.awt.Component;
 

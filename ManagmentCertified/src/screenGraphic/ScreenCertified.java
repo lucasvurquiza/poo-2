@@ -1,4 +1,4 @@
-package telaGrafica;
+package screenGraphic;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,18 +8,25 @@ import java.io.FileNotFoundException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import atributosCertificado.Certified;
-import conexao.DeleteTableBD;
-import conexao.PeopleTable;
-import gerenciadorArquivos.ExtractInformation;
-import gerenciadorArquivos.UploadArchives;
-import tabelaJTable.CellRenderer;
-import tabelaJTable.TableCertified;
+import attributesCertified.Certified;
+import connection.DeleteTableBD;
+import connection.PeopleTableCertified;
+import managerArchives.ExtractInformation;
+import managerArchives.UploadArchives;
+import tableJTable.CellRenderer;
+import tableJTable.TableCertified;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class ScreenCertified extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTable tTable;
+	private JTextField txtFieldSearch;
 
 	public ScreenCertified() {
 		super("Datas Certificados");
@@ -37,22 +44,36 @@ public class ScreenCertified extends JFrame {
 		tTable = new JTable();
 		JScrollPane rollBar = new JScrollPane(tTable);
 		rollBar.setBounds(0, 0, 734, 427);
+
 		// Deixando os Titulos Centralizados
 		((DefaultTableCellRenderer) tTable.getTableHeader().getDefaultRenderer())
-		.setHorizontalAlignment(SwingConstants.CENTER);
+				.setHorizontalAlignment(SwingConstants.CENTER);
+
 		// Deixando Celulas Centralizadas
 		tTable.setDefaultRenderer(Object.class, new CellRenderer());
 		tTable.setModel(model);
 		panel.add(rollBar);
-		// modelo.pegaValor(tTabela, modelo);
-		PeopleTable peopleTable = new PeopleTable();
+		PeopleTableCertified peopleTable = new PeopleTableCertified();
 		model.clearTable();
 		peopleTable.readJTable(tTable, model);
+
+		// Abstracao Coluna ID
+		tTable.getColumnModel().getColumn(0).setMinWidth(0);
+		tTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+		tTable.getColumnModel().getColumn(0).setMaxWidth(0);
+
+		// Bloquear Troca de Coluna
+		tTable.getTableHeader().setReorderingAllowed(false);
+		
+		tTable.setAutoCreateRowSorter(true);
+		//tTable.setRowSorter(sorter);
+		
+		
 		// Criando os Botoes
 
 		// Botao Deletar
 		JButton btnDelete = new JButton("Deletar");
-		btnDelete.setBounds(216, 438, 90, 23);
+		btnDelete.setBounds(413, 438, 90, 23);
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Certified certified = new Certified();
@@ -63,6 +84,7 @@ public class ScreenCertified extends JFrame {
 
 				model.clearTable();
 				peopleTable.readJTable(tTable, model);
+				txtFieldSearch.setText("Digite aqui o nome do certificado a ser buscado");
 			}
 		});
 
@@ -70,7 +92,7 @@ public class ScreenCertified extends JFrame {
 
 		// Botao Sair
 		JButton btnExit = new JButton("Sair");
-		btnExit.setBounds(614, 438, 90, 23);
+		btnExit.setBounds(634, 438, 90, 23);
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -83,37 +105,49 @@ public class ScreenCertified extends JFrame {
 		btnUpload.setBounds(10, 438, 90, 23);
 		btnUpload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				UploadArchives uploadArchives = new UploadArchives();		
+
+				UploadArchives uploadArchives = new UploadArchives();
 				File returnArchive = uploadArchives.returnArchive();
 				PopUpPasswordCertified popUpPasswordCertified = new PopUpPasswordCertified();
 				String passwordArchive = popUpPasswordCertified.showPopUp();
 
 				ExtractInformation extractInformation = new ExtractInformation();
-				
+
 				try {
-					extractInformation.informacoesCertificado(returnArchive, passwordArchive);
+					extractInformation.informationCertified(returnArchive, passwordArchive);
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
-				
-				PeopleTable peopleTable = new PeopleTable();
+
+				PeopleTableCertified peopleTable = new PeopleTableCertified();
 				model.clearTable();
 				peopleTable.readJTable(tTable, model);
 			}
 		});
 		panel.add(btnUpload);
-
-		// Botao de Atualizar
-		JButton btnUpdate = new JButton("Atualizar");
-		btnUpdate.setBounds(446, 438, 90, 23);
-		btnUpdate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				PeopleTable peopleTable = new PeopleTable();
-				model.clearTable();
-				peopleTable.readJTable(tTable, model);
+		
+		txtFieldSearch = new JTextField();
+		txtFieldSearch.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				txtFieldSearch.setText("");
 			}
 		});
-		panel.add(btnUpdate);
+		txtFieldSearch.setText("Digite aqui o nome do certificado a ser buscado");
+		txtFieldSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				txtFieldSearch.setText("");
+			}
+		});
+		txtFieldSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				peopleTable.readJTableForName(tTable, model, txtFieldSearch.getText());
+			}
+		});
+		txtFieldSearch.setBounds(110, 439, 293, 20);
+		panel.add(txtFieldSearch);
+		txtFieldSearch.setColumns(10);
 	}
 }

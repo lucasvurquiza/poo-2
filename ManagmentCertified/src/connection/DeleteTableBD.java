@@ -1,4 +1,4 @@
-package conexao;
+package connection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import atributosCertificado.Certified;
+import attributesCertified.Certified;
 
 public class DeleteTableBD {
 	public void delete(Certified certificado) {

@@ -1,4 +1,4 @@
-package telaGrafica;
+package screenGraphic;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,22 +32,21 @@ public class PopUpPasswordCertified extends JPanel {
 		jPanel.setLayout(null);
 		jPanel.add(jLabel);
 		jPanel.add(jPasswordField);
-		
-		
-		final int option = JOptionPane.showConfirmDialog(null, new Object[] { jLabel, jPasswordField }, "Senha Certificado",
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-				
-		if(option!=JOptionPane.CANCEL_OPTION) {
-				if (jPasswordField.getText().trim().equals("")) {
-			JOptionPane.showMessageDialog(null, "Digite uma senha valida", "Senha Incorreta",
-					JOptionPane.ERROR_MESSAGE);
-			showPopUp();
 
-		} else {
-			return jPasswordField.getText();
+		final int option = JOptionPane.showConfirmDialog(null, new Object[] { jLabel, jPasswordField },
+				"Senha Certificado", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+		if (option != JOptionPane.CANCEL_OPTION) {
+			if (jPasswordField.getText().trim().equals("")) {
+				JOptionPane.showMessageDialog(null, "Digite uma senha valida", "Senha Incorreta",
+						JOptionPane.ERROR_MESSAGE);
+				showPopUp();
+
+			} else {
+				return jPasswordField.getText();
+			}
+
 		}
-		
-	}
 		return jPasswordField.getText();
 	}
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.bouncycastle.asn1.ASN1Encodable;
 
-import atributosCertificado.Certified;
+import attributesCertified.Certified;
 
 public class CertifiedBuilder {
 	private ASN1Encodable name;

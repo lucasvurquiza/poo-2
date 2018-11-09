@@ -1,6 +1,6 @@
-package controlador;
+package controller;
 
-import telaGrafica.ScreenCertified;
+import screenGraphic.ScreenCertified;
 
 public class Controller {
 	public static void main(String[] args) {

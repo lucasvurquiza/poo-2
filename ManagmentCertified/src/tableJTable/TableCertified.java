@@ -1,4 +1,4 @@
-package tabelaJTable;
+package tableJTable;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.bouncycastle.asn1.ASN1Encodable;
 
-import atributosCertificado.Certified;
+import attributesCertified.Certified;
 
 public class TableCertified extends AbstractTableModel {
 
@@ -51,17 +51,17 @@ public class TableCertified extends AbstractTableModel {
 	public Object getValueAt(int line, int columns) {
 		switch (columns) {
 		case 0:
-			return this.data.get(line).getId();
+			return (this.data != null && !this.data.isEmpty() ? this.data.get(line).getId() : null);
 		case 1:
-			return this.data.get(line).getName();
+			return (this.data != null && !this.data.isEmpty() ? this.data.get(line).getName() : null);
 		case 2:
-			return this.data.get(line).getCpfCnpj();
+			return (this.data != null && !this.data.isEmpty() ? this.data.get(line).getCpfCnpj() : null);
 		case 3:
-			return this.data.get(line).getValidityDate();
+			return (this.data != null && !this.data.isEmpty() ? this.data.get(line).getValidityDate() : null);
 		case 4:
-			return this.data.get(line).getEmissionDate();
+			return (this.data != null && !this.data.isEmpty() ? this.data.get(line).getEmissionDate() : null);
 		case 5:
-			return this.data.get(line).getNameCertified();
+			return (this.data != null && !this.data.isEmpty() ? this.data.get(line).getNameCertified() : null);
 		}
 		return null;
 	}
@@ -87,6 +87,7 @@ public class TableCertified extends AbstractTableModel {
 	}
 
 	public void clearTable() {
+		fireTableDataChanged();
 		data.clear();
 	}
 }
